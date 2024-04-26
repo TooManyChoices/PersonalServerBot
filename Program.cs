@@ -60,6 +60,10 @@ namespace Bot
                 )
                 .WithDMPermission(false);
             applicationCommandProperties.Add(colorCommand.Build());
+            var githubCommand = new SlashCommandBuilder()
+                .WithName("git")
+                .WithDescription("Link to the GitHub repo for this bot.");
+            applicationCommandProperties.Add(githubCommand.Build());
 
             try
             {
@@ -76,6 +80,15 @@ namespace Bot
         {
             switch (command.Data.Name)
             {
+                case "git":
+                    var embed = new EmbedBuilder()
+                        .WithTitle("GitHub Repo")
+                        .WithUrl("https://github.com/TooManyChoices/discord-bot-for-personal-server")
+                        .WithThumbnailUrl("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png")
+                        .WithDescription("## About \n\n bot for a personal server in which i do personal things")
+                        .WithColor(Discord.Color.DarkBlue);
+                    await command.RespondAsync(embed: embed.Build());
+                    break;
                 case "set":
                     var role = await GetPersonalRoleAsync(command);
                     SocketGuild guild = _client.GetGuild(command.GuildId ?? 0);
