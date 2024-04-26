@@ -24,7 +24,7 @@ namespace Bot
             string token = Config.GetSetting<string>("token");
             DiscordSocketConfig socketconfig = new DiscordSocketConfig
             {
-                LogLevel = (LogSeverity)(5 - Config.GetSetting<int>("ignore-log-severity", 0))
+                LogLevel = (LogSeverity)(5 - Config.GetSetting<int>("ignore-log-severity", 0)),
             };
             _client = new DiscordSocketClient(socketconfig);
             _client.Log += Log;

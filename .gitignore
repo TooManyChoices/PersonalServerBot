@@ -1,4 +1,4 @@
-config.json
+.vscode/
 bin/
 obj/
-.vscode/
+configs/*
