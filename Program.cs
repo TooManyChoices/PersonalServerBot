@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -9,35 +8,29 @@ using Discord.Net;
 using Discord.WebSocket;
 using Newtonsoft.Json;
 
-namespace MyDiscordBot
+namespace Bot
 {
     class Program
     {
         private static DiscordSocketClient _client;
-        public static Dictionary<string, dynamic> config;
-        private static string _token;
+        
+        public static string[] StartupArgs;
 
         public static async Task Main(string[] args)
         {
-            if (args.Length == 0) 
-            {
-                Console.WriteLine("Please specify location of config.json in executable arguments.");
-                return;
-            }
-            // Get the config.json and the token
-            config = JsonConvert.DeserializeObject<Dictionary<string,dynamic>>(File.ReadAllText(args[0]));
-            _token = (string)config["token"];
+            StartupArgs = args;
+            Config.Init();
 
-            // Initialize client
+            string token = Config.GetSetting<string>("token");
             DiscordSocketConfig socketconfig = new DiscordSocketConfig
             {
-                LogLevel = (LogSeverity)(5 - (int)config["ignore-log-severity"])
+                LogLevel = (LogSeverity)(5 - Config.GetSetting<int>("ignore-log-severity", 0))
             };
             _client = new DiscordSocketClient(socketconfig);
             _client.Log += Log;
             _client.Ready += RegisterCommands;
 
-            await _client.LoginAsync(TokenType.Bot, _token);
+            await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
             _client.SlashCommandExecuted += SlashCommandExecuted;
