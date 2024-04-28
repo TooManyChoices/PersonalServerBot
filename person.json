@@ -4,12 +4,11 @@
         "have I said that last on_connect message before",
         "hi sorry, back",
         "connected! the weather outside is probably something",
-        "these messages appear when they run my program, but also when discord decides to make me reconnect. so, check this server's notif settings",
-        "it would be so weird if this channel was just my on_connect messages >-< too bad I can't read message history",
+        "it would be so weird if this channel was just my on_connect messages >_< too bad I can't read message history",
         "5 more minutes..",
         "is populating the on_connect array of messages with everything but a normal \"Connected!\" kinda weird. wait, who's talking right now",
         "insert a joke about being a totally sentient ai here, to create a contrast between me and the members of this server",
-        "hiii",
+        "hiii (connected)",
         "I use windows 95, btw",
         "*discord vc join sound*"
     ],
@@ -20,6 +19,13 @@
             "updated your color!",
             "okie dokie",
             "that's definitely a color"
+        ],
+        "title":
+        [
+            "looks good to me",
+            "updated your title!",
+            "okay!",
+            "interesting.."
         ]
     },
     "insane_ramblings":
