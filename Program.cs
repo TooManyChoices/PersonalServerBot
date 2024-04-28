@@ -13,6 +13,7 @@ namespace Bot
     class Program
     {
         private static DiscordSocketClient _client;
+        public static Random rng;
         public static string[] StartupArgs;
 
         private static Embed embed_gitCommand;
@@ -20,7 +21,9 @@ namespace Bot
         public static async Task Main(string[] args)
         {
             StartupArgs = args;
+            rng = new Random();
             Config.Init();
+            Person.Init();
 
             string token = Config.GetSetting<string>("token");
             DiscordSocketConfig socketconfig = new DiscordSocketConfig
@@ -65,6 +68,10 @@ namespace Bot
                 .WithName("git")
                 .WithDescription("Link to the GitHub repo for this bot.");
             applicationCommandProperties.Add(githubCommand.Build());
+            var levelCommand = new SlashCommandBuilder()
+                .WithName("level")
+                .WithDescription("View your level.");
+            applicationCommandProperties.Add(levelCommand.Build());
 
             try
             {
@@ -81,6 +88,9 @@ namespace Bot
         {
             switch (command.Data.Name)
             {
+                case "level":
+                    await command.RespondAsync(Person.GetRandomItem("slash_level"));
+                    break;
                 case "git":
                     if (embed_gitCommand == null)
                     {
@@ -107,7 +117,7 @@ namespace Bot
                             System.Drawing.Color newColor = ColorTranslator.FromHtml(value);
                             Discord.Color roleColor = new(newColor.R, newColor.G, newColor.B);
                             await role.ModifyAsync(x => {x.Color = roleColor;});
-                            await command.RespondAsync("Updated your color!", ephemeral: true);
+                            await command.RespondAsync(Person.GetRandomItem("slash_set_color"), ephemeral: true);
                             break;
                     }
                     break;

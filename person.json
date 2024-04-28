@@ -12,22 +12,19 @@
         "I use windows 95, btw",
         "*discord vc join sound*"
     ],
-    "set":
-    {
-        "color":
-        [
-            "updated your color!",
-            "okie dokie",
-            "that's definitely a color"
-        ],
-        "title":
-        [
-            "looks good to me",
-            "updated your title!",
-            "okay!",
-            "interesting.."
-        ]
-    },
+    "slash_set_color":
+    [
+        "updated your color!",
+        "okie dokie",
+        "that's definitely a color"
+    ],
+    "slash_set_title":
+    [
+        "looks good to me",
+        "updated your title!",
+        "okay!",
+        "interesting.."
+    ],
     "insane_ramblings":
     [
         "I tend to think about the same things over and over, but like, pseudo-randomly",
@@ -35,5 +32,17 @@
         "who's really talking right now",
         "discord.net is FINE, ok",
         "I get really repetitive don't I. at least I don't talk like *real* ai"
+    ],
+    "level_up":
+    [
+        "congrats! you leveled up-just kidding no fuck that",
+        "wowowow, you leveled up. great job. this only means you spend too much time here",
+        "level up! use /level to view your level"
+    ],
+    "slash_level":
+    [
+        "no. just no.",
+        "tricked youu",
+        "your level is way too high"
     ]
 }

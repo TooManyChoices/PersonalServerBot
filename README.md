@@ -6,3 +6,4 @@ you must make the file yourself (preferably in the configs folder) and also add 
 here are the keys:
 - **token (string, required)**: y'know, the bot's token.
 - **ignore-log-severity (number, optional)**: a lot of logs can appear, luckily they all have a severity level between 0-5. i'd recommend setting this one to 2 when you aren't testing the bot so that the console isn't flooded too badly.
+- **person (string, required)**: path from targetted config.json to the person.json.
