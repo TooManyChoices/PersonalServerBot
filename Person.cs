@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Timers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -12,11 +11,27 @@ namespace Bot
     {
         public static Dictionary<string, dynamic> personDictionary;
 
+        private static DateTime lastModified;
+        private static string personPath;
+
         public static void Init()
         {
-            personDictionary = JsonConvert.DeserializeObject<Dictionary<string,dynamic>>(
-                File.ReadAllText(Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("person")))
-            );
+            personPath = Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("person"));
+            Timer timer = new Timer {
+                Interval = 30000
+            };
+            timer.Elapsed += CheckFile;
+            CheckFile(null, null);
+        }
+        
+        public static void CheckFile(object sender, ElapsedEventArgs e)
+        {
+            DateTime check = File.GetLastWriteTime(personPath);
+            if (lastModified != check)
+            {
+                lastModified = check;
+                personDictionary = JsonConvert.DeserializeObject<Dictionary<string,dynamic>>(File.ReadAllText(personPath));
+            }
         }
 
         public static string GetRandomItem(string key)
