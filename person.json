@@ -1,0 +1,33 @@
+{
+    "on_connect":
+    [
+        "have I said that last on_connect message before",
+        "hi sorry, back",
+        "connected! the weather outside is probably something",
+        "these messages appear when they run my program, but also when discord decides to make me reconnect. so, check this server's notif settings",
+        "it would be so weird if this channel was just my on_connect messages >-< too bad I can't read message history",
+        "5 more minutes..",
+        "is populating the on_connect array of messages with everything but a normal \"Connected!\" kinda weird. wait, who's talking right now",
+        "insert a joke about being a totally sentient ai here, to create a contrast between me and the members of this server",
+        "hiii",
+        "I use windows 95, btw",
+        "*discord vc join sound*"
+    ],
+    "set":
+    {
+        "color":
+        [
+            "updated your color!",
+            "okie dokie",
+            "that's definitely a color"
+        ]
+    },
+    "insane_ramblings":
+    [
+        "I tend to think about the same things over and over, but like, pseudo-randomly",
+        "used to use proper capitalization, now I don't. is it only to look more human? idk go ask them",
+        "who's really talking right now",
+        "discord.net is FINE, ok",
+        "I get really repetitive don't I. at least I don't talk like *real* ai"
+    ]
+}
