@@ -13,8 +13,9 @@ namespace Bot
     class Program
     {
         private static DiscordSocketClient _client;
-        
         public static string[] StartupArgs;
+
+        private static Embed embed_gitCommand;
 
         public static async Task Main(string[] args)
         {
@@ -81,13 +82,17 @@ namespace Bot
             switch (command.Data.Name)
             {
                 case "git":
-                    var embed = new EmbedBuilder()
-                        .WithTitle("GitHub Repo")
-                        .WithUrl("https://github.com/TooManyChoices/discord-bot-for-personal-server")
-                        .WithThumbnailUrl("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png")
-                        .WithDescription("## About \n\n bot for a personal server in which i do personal things")
-                        .WithColor(Discord.Color.DarkBlue);
-                    await command.RespondAsync(embed: embed.Build());
+                    if (embed_gitCommand == null)
+                    {
+                        var embed = new EmbedBuilder()
+                            .WithTitle("GitHub Repo")
+                            .WithUrl("https://github.com/TooManyChoices/discord-bot-for-personal-server")
+                            .WithThumbnailUrl("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png")
+                            .WithDescription("bot for a personal server in which i do personal things")
+                            .WithColor(Discord.Color.DarkBlue);
+                        embed_gitCommand = embed.Build();
+                    }
+                    await command.RespondAsync(embed: embed_gitCommand);
                     break;
                 case "set":
                     var role = await GetPersonalRoleAsync(command);
