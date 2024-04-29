@@ -50,28 +50,28 @@ namespace Bot
 
         public static async Task RegisterCommands()
         {
-            List<ApplicationCommandProperties> applicationCommandProperties = new();
-            var colorCommand = new SlashCommandBuilder()
-                .WithName("set")
-                .WithDescription("Set some values, idfk.")
-                .AddOption(new SlashCommandOptionBuilder()
-                    .WithName("color")
-                    .WithDescription("Set your color.")
-                    .WithType(ApplicationCommandOptionType.SubCommand)
-                    .AddOption("hex", ApplicationCommandOptionType.String, "A hex code", 
-                        isRequired:true
+            var applicationCommandProperties = new List<ApplicationCommandProperties> {
+                new SlashCommandBuilder()
+                    .WithName("set")
+                    .WithDescription("Set some values, idfk.")
+                    .AddOption(new SlashCommandOptionBuilder()
+                        .WithName("color")
+                        .WithDescription("Set your color.")
+                        .WithType(ApplicationCommandOptionType.SubCommand)
+                        .AddOption("hex", ApplicationCommandOptionType.String, "A hex code", 
+                            isRequired:true
+                        )
                     )
-                )
-                .WithDMPermission(false);
-            applicationCommandProperties.Add(colorCommand.Build());
-            var githubCommand = new SlashCommandBuilder()
-                .WithName("git")
-                .WithDescription("Link to the GitHub repo for this bot.");
-            applicationCommandProperties.Add(githubCommand.Build());
-            var levelCommand = new SlashCommandBuilder()
-                .WithName("level")
-                .WithDescription("View your level.");
-            applicationCommandProperties.Add(levelCommand.Build());
+                    .WithDMPermission(false)
+                    .Build(),
+                new SlashCommandBuilder()
+                    .WithName("git")
+                    .WithDescription("Link to the GitHub repo for this bot.").Build(),
+                new SlashCommandBuilder()
+                    .WithName("level")
+                    .WithDescription("View your level.")
+                    .WithDMPermission(false).Build()
+            };
 
             try
             {
