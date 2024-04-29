@@ -37,7 +37,7 @@ namespace Bot
         public static string GetRandomItem(string key)
         {
             JArray array = personDictionary[key];
-            string value = (string)array[Program.rng.Next(0, array.Count-1)];
+            string value = (string)array[Program.rng.Next(0, array.Count)];
             return value;
         }
     }
