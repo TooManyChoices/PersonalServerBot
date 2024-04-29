@@ -17,8 +17,7 @@ namespace Bot
         public static string[] StartupArgs;
 
         private static Embed embed_gitCommand;
-        private static System.Timers.Timer timer;
-        private static IMessageChannel myChannel;
+        private static Timer timer;
 
         public static async Task Main(string[] args)
         {
@@ -42,7 +41,7 @@ namespace Bot
             await _client.StartAsync();
 
             _client.SlashCommandExecuted += SlashCommandExecuted;
-            timer = new System.Timers.Timer();
+            timer = new Timer();
             DateTime nowTime = DateTime.Now;
             DateTime nextTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 0, 0, 0, 0);
             if (nowTime > nextTime) nextTime = nextTime.AddDays(1);
@@ -168,15 +167,21 @@ namespace Bot
 
         public static async Task<IRole> GetPersonalRoleAsync(IGuild guild, IUser user)
         {
-            string username = user.Username;
+            ServerData serverData = Database.GuildIdToServerData(guild.Id);
+            if (serverData.personal_roles.ContainsKey(Convert.ToString(user.Id)))
+            {
+                IRole foundRole = guild.GetRole(serverData.personal_roles[Convert.ToString(user.Id)]);
+                if (foundRole != null) return foundRole;
+            }
             
-            IRole foundRole = guild.Roles.FirstOrDefault(x => x.Name == username);
-            if (foundRole != null) return foundRole;
-            
-            var role = await guild.CreateRoleAsync(username, GuildPermissions.None, null, false, null);
+            var role = await guild.CreateRoleAsync(user.Username, GuildPermissions.None, null, false, null);
             await (user as IGuildUser).AddRoleAsync(
                 role.Id
             );
+
+            Database.serverDatabase[Convert.ToString(guild.Id)].personal_roles[Convert.ToString(user.Id)] = role.Id;
+            Database.SaveToFile();
+
             return role;
         }
         public static async Task<IRole> GetPersonalRoleAsync(SocketGuildUser guildUser)

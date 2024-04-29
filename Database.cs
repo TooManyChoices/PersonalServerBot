@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace Bot
 {
@@ -32,7 +33,7 @@ namespace Bot
         {
             File.WriteAllText(
                 databasePath,
-                System.Text.Json.JsonSerializer.Serialize(serverDatabase)
+                System.Text.Json.JsonSerializer.Serialize(serverDatabase, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true })
             );
         }
     }
@@ -41,6 +42,7 @@ namespace Bot
     {
         public RoleData linked_roles;
         public ChannelData linked_channels;
+        public Dictionary<string, ulong> personal_roles;
     }
     struct RoleData 
     {
