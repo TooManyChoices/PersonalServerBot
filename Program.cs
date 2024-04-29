@@ -1,6 +1,6 @@
 using System;
+using System.Timers;
 using System.Drawing;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -17,6 +17,8 @@ namespace Bot
         public static string[] StartupArgs;
 
         private static Embed embed_gitCommand;
+        private static System.Timers.Timer timer;
+        private static IMessageChannel myChannel;
 
         public static async Task Main(string[] args)
         {
@@ -24,8 +26,8 @@ namespace Bot
             rng = new Random();
             Config.Init();
             Person.Init();
+            Database.Init();
 
-            string token = Config.GetSetting<string>("token");
             DiscordSocketConfig socketconfig = new DiscordSocketConfig
             {
                 LogLevel = (LogSeverity)(5 - Config.GetSetting<int>("ignore-log-severity", 0)),
@@ -33,13 +35,53 @@ namespace Bot
             _client = new DiscordSocketClient(socketconfig);
             _client.Log += Log;
             _client.Ready += RegisterCommands;
+            if (!Config.GetSetting<bool>("disable-ready-messages", false)) _client.Ready += ReadyMessage;
 
-            await _client.LoginAsync(TokenType.Bot, token);
+
+            await _client.LoginAsync(TokenType.Bot, Config.GetSetting<string>("token"));
             await _client.StartAsync();
 
             _client.SlashCommandExecuted += SlashCommandExecuted;
+            timer = new System.Timers.Timer();
+            DateTime nowTime = DateTime.Now;
+            DateTime nextTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 0, 0, 0, 0);
+            if (nowTime > nextTime) nextTime = nextTime.AddDays(1);
+            timer.Interval = (nextTime - nowTime).TotalMilliseconds;
+            timer.Elapsed += InsaneMessage;
+            timer.Start();
 
             await Task.Delay(-1);
+        }
+
+        private static async Task ReadyMessage()
+        {
+            string messageToSend = Person.GetRandomItem("on_connect");
+            foreach (var server in Database.serverDatabase)
+            {
+                if (server.Value.linked_channels.on_connect != 0)
+                {
+                    var channel = (IMessageChannel) _client.GetGuild((ulong)Convert.ToInt64(server.Key)).GetChannel((ulong)Convert.ToInt64(server.Value.linked_channels.on_connect));
+                    await channel.SendMessageAsync(messageToSend);
+                }
+            }
+        }
+
+        private static async void InsaneMessage(object sender, ElapsedEventArgs e)
+        {
+            string messageToSend = Person.GetRandomItem("insane_ramblings");
+            foreach (var server in Database.serverDatabase)
+            {
+                if (server.Value.linked_channels.insane_ramblings != 0)
+                {
+                    var channel = (IMessageChannel) _client.GetGuild((ulong)Convert.ToInt64(server.Key)).GetChannel((ulong)Convert.ToInt64(server.Value.linked_channels.insane_ramblings));
+                    await channel.SendMessageAsync(messageToSend);
+                }
+            }
+
+            DateTime nowTime = DateTime.Now;
+            DateTime nextTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 0, 0, 0, 0);
+            if (nowTime > nextTime) nextTime = nextTime.AddDays(1);
+            timer.Interval = (nextTime - nowTime).TotalMilliseconds;
         }
 
         public static Task Log(LogMessage msg)
@@ -50,7 +92,7 @@ namespace Bot
 
         public static async Task RegisterCommands()
         {
-            var applicationCommandProperties = new List<ApplicationCommandProperties> {
+            var applicationCommandProperties = new ApplicationCommandProperties[] {
                 new SlashCommandBuilder()
                     .WithName("set")
                     .WithDescription("Set some values, idfk.")
