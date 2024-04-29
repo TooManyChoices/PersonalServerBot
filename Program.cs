@@ -30,6 +30,7 @@ namespace Bot
             DiscordSocketConfig socketconfig = new DiscordSocketConfig
             {
                 LogLevel = (LogSeverity)(5 - Config.GetSetting<int>("ignore-log-severity", 0)),
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers
             };
             _client = new DiscordSocketClient(socketconfig);
             _client.Log += Log;
@@ -41,6 +42,7 @@ namespace Bot
             await _client.StartAsync();
 
             _client.SlashCommandExecuted += SlashCommandExecuted;
+            _client.UserJoined += UserJoined;
             timer = new Timer();
             DateTime nowTime = DateTime.Now;
             DateTime nextTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 0, 0, 0, 0);
@@ -50,6 +52,14 @@ namespace Bot
             timer.Start();
 
             await Task.Delay(-1);
+        }
+
+        private static async Task UserJoined(SocketGuildUser user)
+        {
+            await user.AddRoleAsync(Database.GuildIdToServerData(user.Guild.Id).linked_roles.member);
+
+            if (user.Guild.GetWelcomeMessagesEnabled())
+                await user.Guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_joined"));
         }
 
         private static async Task ReadyMessage()
