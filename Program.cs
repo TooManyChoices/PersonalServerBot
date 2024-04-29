@@ -134,6 +134,17 @@ namespace Bot
                             .WithDescription("Receive a message in the middle of the night.")
                             .WithType(ApplicationCommandOptionType.SubCommand)
                     )
+                    .WithDMPermission(false).Build(),
+                new SlashCommandBuilder()
+                    .WithName("role")
+                    .WithDescription("Manage role links.")
+                    .WithDefaultMemberPermissions(GuildPermission.ManageGuild)
+                    .AddOptions(
+                        new SlashCommandOptionBuilder()
+                            .WithName("member")
+                            .WithDescription("Role that any non-bot user is assigned to upon joining.")
+                            .WithType(ApplicationCommandOptionType.Role)
+                    )
                     .WithDMPermission(false).Build()
             };
 
@@ -152,7 +163,23 @@ namespace Bot
         {
             switch (command.Data.Name)
             {
+                case "role":
+                {
+                    string linkInput = command.Data.Options.First().Name;
+                    ServerData serverData = Database.GuildIdToServerData((ulong)command.GuildId);
+                    switch (linkInput)
+                    {
+                        case "member":
+                            serverData.linked_roles.member = (command.Data.Options.First().Value as SocketRole).Id;
+                            break;
+                    }
+                    Database.UpdateServerDataOfGuildId((ulong)command.GuildId, serverData);
+                    Database.SaveToFile();
+                    await command.RespondAsync(Person.GetRandomItem("slash_configs"), ephemeral: true);
+                    break;
+                }
                 case "channel":
+                {
                     string linkInput = command.Data.Options.First().Name;
                     ServerData serverData = Database.GuildIdToServerData((ulong)command.GuildId);
                     switch (linkInput)
@@ -166,12 +193,16 @@ namespace Bot
                     }
                     Database.UpdateServerDataOfGuildId((ulong)command.GuildId, serverData);
                     Database.SaveToFile();
-                    await command.RespondAsync(Person.GetRandomItem("slash_channel"), ephemeral: true);
+                    await command.RespondAsync(Person.GetRandomItem("slash_configs"), ephemeral: true);
                     break;
+                }
                 case "level":
+                {
                     await command.RespondAsync(Person.GetRandomItem("slash_level"));
                     break;
+                }
                 case "git":
+                {
                     if (embed_gitCommand == null)
                     {
                         var embed = new EmbedBuilder()
@@ -184,7 +215,9 @@ namespace Bot
                     }
                     await command.RespondAsync(embed: embed_gitCommand);
                     break;
+                }
                 case "set":
+                {
                     var role = await GetPersonalRoleAsync(command);
                     SocketGuild guild = _client.GetGuild(command.GuildId ?? 0);
                     if (role == null) break;
@@ -206,6 +239,7 @@ namespace Bot
                             break;
                     }
                     break;
+                }
             }
         }
 
