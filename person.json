@@ -26,6 +26,12 @@
         "okay!",
         "interesting.."
     ],
+    "slash_channel":
+    [
+        "gotcha!",
+        "on it!",
+        "who do you think you are to boss me around like this"
+    ],
     "slash_level":
     [
         "no. just no.",
@@ -55,5 +61,12 @@
         "hiii",
         "welcome",
         "make sure to like and subscribe"
+    ],
+    "user_left":
+    [
+        "I scared them off didn't I",
+        "whoops",
+        "byee",
+        "have fun"
     ]
 }

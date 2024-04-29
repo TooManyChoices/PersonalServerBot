@@ -119,6 +119,21 @@ namespace Bot
                 new SlashCommandBuilder()
                     .WithName("level")
                     .WithDescription("View your level.")
+                    .WithDMPermission(false).Build(),
+                new SlashCommandBuilder()
+                    .WithName("channel")
+                    .WithDescription("Manage channel links.")
+                    .WithDefaultMemberPermissions(GuildPermission.ManageGuild)
+                    .AddOptions(
+                        new SlashCommandOptionBuilder()
+                            .WithName("onconnect")
+                            .WithDescription("Receive message when the bot starts up.")
+                            .WithType(ApplicationCommandOptionType.SubCommand),
+                        new SlashCommandOptionBuilder()
+                            .WithName("insaneramblings")
+                            .WithDescription("Receive a message in the middle of the night.")
+                            .WithType(ApplicationCommandOptionType.SubCommand)
+                    )
                     .WithDMPermission(false).Build()
             };
 
@@ -137,6 +152,22 @@ namespace Bot
         {
             switch (command.Data.Name)
             {
+                case "channel":
+                    string linkInput = command.Data.Options.First().Name;
+                    ServerData serverData = Database.GuildIdToServerData((ulong)command.GuildId);
+                    switch (linkInput)
+                    {
+                        case "onconnect":
+                            serverData.linked_channels.on_connect = (ulong)command.ChannelId;
+                            break;
+                        case "insaneramblings":
+                            serverData.linked_channels.insane_ramblings = (ulong)command.ChannelId;
+                            break;
+                    }
+                    Database.UpdateServerDataOfGuildId((ulong)command.GuildId, serverData);
+                    Database.SaveToFile();
+                    await command.RespondAsync(Person.GetRandomItem("slash_channel"), ephemeral: true);
+                    break;
                 case "level":
                     await command.RespondAsync(Person.GetRandomItem("slash_level"));
                     break;

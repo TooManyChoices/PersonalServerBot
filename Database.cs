@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System;
 
 namespace Bot
 {
@@ -27,6 +28,10 @@ namespace Bot
         public static ServerData[] GetAllServerData()
         {
             return serverDatabase.Values.ToArray();
+        }
+        public static void UpdateServerDataOfGuildId(ulong uid, ServerData serverData)
+        {
+            serverDatabase[uid.ToString()] = serverData;
         }
 
         public static void SaveToFile()
