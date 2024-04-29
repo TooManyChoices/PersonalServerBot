@@ -131,7 +131,7 @@ namespace Bot
             IRole foundRole = guild.Roles.FirstOrDefault(x => x.Name == username);
             if (foundRole != null) return foundRole;
             
-            var role = await guild.CreateRoleAsync(username, null, null, false, null);
+            var role = await guild.CreateRoleAsync(username, GuildPermissions.None, null, false, null);
             await (user as IGuildUser).AddRoleAsync(
                 role.Id
             );
