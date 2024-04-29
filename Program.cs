@@ -103,6 +103,14 @@ namespace Bot
                             isRequired:true
                         )
                     )
+                    .AddOption(new SlashCommandOptionBuilder()
+                        .WithName("title")
+                        .WithDescription("Set your title.")
+                        .WithType(ApplicationCommandOptionType.SubCommand)
+                        .AddOption("title", ApplicationCommandOptionType.String, "Anything, I hope", 
+                            isRequired:true
+                        )
+                    )
                     .WithDMPermission(false)
                     .Build(),
                 new SlashCommandBuilder()
@@ -153,12 +161,17 @@ namespace Bot
                     switch (subcommand)
                     {
                         case "color":
-                            string value = (string)command.Data.Options.First().Options.First().Value;
-                            if (value[0] != '#') value = '#'+value;
-                            System.Drawing.Color newColor = ColorTranslator.FromHtml(value);
+                            string colorInput = (string)command.Data.Options.First().Options.First().Value;
+                            if (colorInput[0] != '#') colorInput = '#'+colorInput;
+                            System.Drawing.Color newColor = ColorTranslator.FromHtml(colorInput);
                             Discord.Color roleColor = new(newColor.R, newColor.G, newColor.B);
                             await role.ModifyAsync(x => {x.Color = roleColor;});
                             await command.RespondAsync(Person.GetRandomItem("slash_set_color"), ephemeral: true);
+                            break;
+                        case "title":
+                            string titleInput = (string)command.Data.Options.First().Options.First().Value;
+                            await role.ModifyAsync(x => {x.Name = titleInput;});
+                            await command.RespondAsync(Person.GetRandomItem("slash_set_title"), ephemeral: true);
                             break;
                     }
                     break;
