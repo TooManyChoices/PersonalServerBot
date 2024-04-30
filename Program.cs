@@ -52,7 +52,8 @@ namespace Bot
 
         private static async Task UserJoined(SocketGuildUser user)
         {
-            await user.AddRoleAsync(Database.ServerDataFromId(user.Guild.Id).linked_roles.member);
+            if (Database.ServerDataFromId(user.Guild.Id).linked_roles.member != 0)
+                await user.AddRoleAsync(Database.ServerDataFromId(user.Guild.Id).linked_roles.member);
 
             if (user.Guild.GetWelcomeMessagesEnabled())
                 await user.Guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_joined"));
@@ -73,7 +74,7 @@ namespace Bot
 
         private static async void InsaneMessage(object sender, ElapsedEventArgs e)
         {
-            if (rng.NextSingle() > Config.GetSetting<double>("insane-rambling-chance", 1.0) / 100) return;
+            if (rng.NextSingle() > Config.GetSetting<double>("insane-rambling-chance", 100.0) / 100) return;
 
             string messageToSend = Person.GetRandomItem("insane_ramblings");
             foreach (var server in Database.GetServersEnumerable())
