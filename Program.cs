@@ -77,6 +77,8 @@ namespace Bot
 
         private static async void InsaneMessage(object sender, ElapsedEventArgs e)
         {
+            if (rng.NextSingle() > Config.GetSetting<double>("insane-rambling-chance", 1.0) / 100) return;
+
             string messageToSend = Person.GetRandomItem("insane_ramblings");
             foreach (var server in Database.serverDatabase)
             {
