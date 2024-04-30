@@ -56,7 +56,7 @@ namespace Bot
 
         private static async Task UserJoined(SocketGuildUser user)
         {
-            await user.AddRoleAsync(Database.GuildIdToServerData(user.Guild.Id).linked_roles.member);
+            await user.AddRoleAsync(Database.ServerDataFromId(user.Guild.Id).linked_roles.member);
 
             if (user.Guild.GetWelcomeMessagesEnabled())
                 await user.Guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_joined"));
@@ -65,7 +65,7 @@ namespace Bot
         private static async Task ReadyMessage()
         {
             string messageToSend = Person.GetRandomItem("on_connect");
-            foreach (var server in Database.serverDatabase)
+            foreach (var server in Database.GetServersEnumerable())
             {
                 if (server.Value.linked_channels.on_connect != 0)
                 {
@@ -80,7 +80,7 @@ namespace Bot
             if (rng.NextSingle() > Config.GetSetting<double>("insane-rambling-chance", 1.0) / 100) return;
 
             string messageToSend = Person.GetRandomItem("insane_ramblings");
-            foreach (var server in Database.serverDatabase)
+            foreach (var server in Database.GetServersEnumerable())
             {
                 if (server.Value.linked_channels.insane_ramblings != 0)
                 {
@@ -178,22 +178,21 @@ namespace Bot
                 case "role":
                 {
                     string linkInput = command.Data.Options.First().Name;
-                    ServerData serverData = Database.GuildIdToServerData((ulong)command.GuildId);
+                    ServerData serverData = Database.ServerDataFromId((ulong)command.GuildId);
                     switch (linkInput)
                     {
                         case "member":
                             serverData.linked_roles.member = (command.Data.Options.First().Value as SocketRole).Id;
                             break;
                     }
-                    Database.UpdateServerDataOfGuildId((ulong)command.GuildId, serverData);
-                    Database.SaveToFile();
+                    Database.UpdateServerData((ulong)command.GuildId, serverData);
                     await command.RespondAsync(Person.GetRandomItem("slash_configs"), ephemeral: true);
                     break;
                 }
                 case "channel":
                 {
                     string linkInput = command.Data.Options.First().Name;
-                    ServerData serverData = Database.GuildIdToServerData((ulong)command.GuildId);
+                    ServerData serverData = Database.ServerDataFromId((ulong)command.GuildId);
                     switch (linkInput)
                     {
                         case "onconnect":
@@ -203,8 +202,7 @@ namespace Bot
                             serverData.linked_channels.insane_ramblings = (ulong)command.ChannelId;
                             break;
                     }
-                    Database.UpdateServerDataOfGuildId((ulong)command.GuildId, serverData);
-                    Database.SaveToFile();
+                    Database.UpdateServerData((ulong)command.GuildId, serverData);
                     await command.RespondAsync(Person.GetRandomItem("slash_configs"), ephemeral: true);
                     break;
                 }
@@ -257,7 +255,7 @@ namespace Bot
 
         public static async Task<IRole> GetPersonalRoleAsync(IGuild guild, IUser user)
         {
-            ServerData serverData = Database.GuildIdToServerData(guild.Id);
+            ServerData serverData = Database.ServerDataFromId(guild.Id);
             if (serverData.personal_roles.ContainsKey(Convert.ToString(user.Id)))
             {
                 IRole foundRole = guild.GetRole(serverData.personal_roles[Convert.ToString(user.Id)]);
@@ -268,9 +266,8 @@ namespace Bot
             await (user as IGuildUser).AddRoleAsync(
                 role.Id
             );
-
-            Database.serverDatabase[Convert.ToString(guild.Id)].personal_roles[Convert.ToString(user.Id)] = role.Id;
-            Database.SaveToFile();
+            serverData.personal_roles[Convert.ToString(user.Id)] = role.Id;
+            Database.UpdateServerData(guild.Id, serverData);
 
             return role;
         }

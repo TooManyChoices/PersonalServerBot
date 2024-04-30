@@ -1,22 +1,20 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Timers;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Bot
 {
     public static class Person 
     {
-        public static Dictionary<string, dynamic> personDictionary;
+        private static JSONFileDictionary<string, dynamic> fileDictionary;
 
         private static DateTime lastModified;
-        private static string personPath;
 
         public static void Init()
         {
-            personPath = Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("person"));
+            fileDictionary = new JSONFileDictionary<string, dynamic>(Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("person")));
+
             Timer timer = new Timer {
                 Interval = 30000
             };
@@ -26,17 +24,17 @@ namespace Bot
         
         public static void CheckFile(object sender, ElapsedEventArgs e)
         {
-            DateTime check = File.GetLastWriteTime(personPath);
+            DateTime check = File.GetLastWriteTime(fileDictionary.path);
             if (lastModified != check)
             {
                 lastModified = check;
-                personDictionary = JsonConvert.DeserializeObject<Dictionary<string,dynamic>>(File.ReadAllText(personPath));
+                fileDictionary.ReadFile();
             }
         }
 
         public static string GetRandomItem(string key)
         {
-            JArray array = personDictionary[key];
+            JArray array = fileDictionary.dictionary[key];
             string value = (string)array[Program.rng.Next(0, array.Count)];
             return value;
         }

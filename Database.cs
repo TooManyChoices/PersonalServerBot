@@ -1,45 +1,37 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System;
 
 namespace Bot
 {
     class Database
     {
-        public static Dictionary<string, ServerData> serverDatabase { get; private set; }
-        private static string databasePath;
+        private static JSONFileDictionary<string, ServerData> fileDictionary;
 
         public static void Init()
         {
-            databasePath = Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("database"));
-            serverDatabase = JsonConvert.DeserializeObject<Dictionary<string, ServerData>>(
-                File.ReadAllText(databasePath)
+            fileDictionary = new JSONFileDictionary<string, ServerData>(
+                Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("database"))
             );
         }
 
-        public static ServerData GuildIdToServerData(ulong uid)
+        public static ServerData ServerDataFromId(ulong uid)
         {
             var sid = uid.ToString();
-            return serverDatabase[sid];
+            return fileDictionary.dictionary[sid];
         }
-        public static ServerData[] GetAllServerData()
+        public static ServerData[] GetAllServers()
         {
-            return serverDatabase.Values.ToArray();
+            return fileDictionary.dictionary.Values.ToArray();
         }
-        public static void UpdateServerDataOfGuildId(ulong uid, ServerData serverData)
+        public static IEnumerable<KeyValuePair<string, ServerData>> GetServersEnumerable()
         {
-            serverDatabase[uid.ToString()] = serverData;
+            return fileDictionary.dictionary.AsEnumerable();
         }
-
-        public static void SaveToFile()
+        public static void UpdateServerData(ulong uid, ServerData serverData)
         {
-            File.WriteAllText(
-                databasePath,
-                System.Text.Json.JsonSerializer.Serialize(serverDatabase, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true })
-            );
+            fileDictionary.dictionary[uid.ToString()] = serverData;
+            fileDictionary.SaveFile();
         }
     }
 

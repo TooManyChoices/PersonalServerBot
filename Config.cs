@@ -1,31 +1,29 @@
 using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace Bot
 {
     public static class Config 
     {
-        public static Dictionary<string, dynamic> configDictionary;
+        private static JSONFileDictionary<string, dynamic> fileDictionary;
 
         public static void Init()
         {
-            configDictionary = JsonConvert.DeserializeObject<Dictionary<string,dynamic>>(File.ReadAllText(Program.StartupArgs[0]));
+            fileDictionary = new JSONFileDictionary<string, dynamic>(Program.StartupArgs[0]);
         }
 
         public static bool HasSetting(string key)
         {
-            return configDictionary.ContainsKey(key);
+            return fileDictionary.dictionary.ContainsKey(key);
         }
 
         public static T GetSetting<T>(string key)
         {
-            return (T)configDictionary[key];
+            return (T)fileDictionary.dictionary[key];
         }
 
         public static T GetSetting<T>(string key, T defaultValue)
         {
-            return HasSetting(key) ? (T)configDictionary[key] : defaultValue;
+            return HasSetting(key) ? (T)fileDictionary.dictionary[key] : defaultValue;
         }
     }
 }
