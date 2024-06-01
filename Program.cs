@@ -3,6 +3,7 @@ using System.Timers;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.VisualBasic;
 
 namespace Bot
 {
@@ -37,6 +38,7 @@ namespace Bot
 
             _client.SlashCommandExecuted += SlashCommands.SlashCommandExecuted;
             _client.UserJoined += UserJoined;
+            _client.ReactionAdded += ReactionAdded;
             timer = new Timer();
             DateTime nowTime = DateTime.Now;
             DateTime nextTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 0, 0, 0, 0);
@@ -49,6 +51,15 @@ namespace Bot
         }
         
         public static DiscordSocketClient GetClient() => _client;
+
+        private static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
+        {
+            IUserMessage realMessage = await message.GetOrDownloadAsync();
+            if (reaction.Emote.Name == "pin")
+            {
+                await realMessage.PinAsync();
+            }
+        }
 
         private static async Task UserJoined(SocketGuildUser user)
         {

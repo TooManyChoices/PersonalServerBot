@@ -21,7 +21,7 @@ namespace Bot
                         .WithName("color")
                         .WithDescription("Set your color.")
                         .WithType(ApplicationCommandOptionType.SubCommand)
-                        .AddOption("hex", ApplicationCommandOptionType.String, "A hex code", 
+                        .AddOption("hex", ApplicationCommandOptionType.String, "hex", 
                             isRequired:true
                         )
                     )
@@ -29,11 +29,10 @@ namespace Bot
                         .WithName("title")
                         .WithDescription("Set your title.")
                         .WithType(ApplicationCommandOptionType.SubCommand)
-                        .AddOption("title", ApplicationCommandOptionType.String, "Anything, I hope", 
+                        .AddOption("title", ApplicationCommandOptionType.String, "title", 
                             isRequired:true
                         )
                     )
-                    .WithDMPermission(false)
                     .Build(),
                 new SlashCommandBuilder()
                     .WithName("git")
@@ -41,7 +40,7 @@ namespace Bot
                 new SlashCommandBuilder()
                     .WithName("level")
                     .WithDescription("View your level.")
-                    .WithDMPermission(false).Build(),
+                    .Build(),
                 new SlashCommandBuilder()
                     .WithName("channel")
                     .WithDescription("Manage channel links.")
@@ -56,7 +55,7 @@ namespace Bot
                             .WithDescription("Receive a message in the middle of the night.")
                             .WithType(ApplicationCommandOptionType.SubCommand)
                     )
-                    .WithDMPermission(false).Build(),
+                    .Build(),
                 new SlashCommandBuilder()
                     .WithName("role")
                     .WithDescription("Manage role links.")
@@ -67,7 +66,7 @@ namespace Bot
                             .WithDescription("Role that any non-bot user is assigned to upon joining.")
                             .WithType(ApplicationCommandOptionType.Role)
                     )
-                    .WithDMPermission(false).Build()
+                    .Build()
             };
 
             try
