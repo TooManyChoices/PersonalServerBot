@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +67,21 @@ namespace Bot
                             .WithDescription("Role that any non-bot user is assigned to upon joining.")
                             .WithType(ApplicationCommandOptionType.Role)
                     )
+                    .Build(),
+                new SlashCommandBuilder()
+                    .WithName("purge")
+                    .WithDescription("Delete a lot of messages.")
+                    .WithDefaultMemberPermissions(GuildPermission.ManageMessages)
+                    .AddOptions(
+                        new SlashCommandOptionBuilder()
+                            .WithName("the-last-x")
+                            .WithDescription("Delete the last x messages")
+                            .WithType(ApplicationCommandOptionType.Integer),
+                        new SlashCommandOptionBuilder()
+                            .WithName("until-x")
+                            .WithDescription("Delete messages until reach x message ID/url")
+                            .WithType(ApplicationCommandOptionType.String)
+                        )
                     .Build()
             };
 
@@ -151,6 +167,34 @@ namespace Bot
                             string titleInput = (string)command.Data.Options.First().Options.First().Value;
                             await role.ModifyAsync(x => {x.Name = titleInput;});
                             await command.RespondAsync(Person.GetRandomItem("slash_set_title"), ephemeral: true);
+                            break;
+                    }
+                    break;
+                }
+                case "purge":
+                {
+                    string condition = command.Data.Options.First().Name;
+                    var conditionValue = command.Data.Options.First().Value;
+                    switch (condition)
+                    {
+                        case "the-last-x":
+                            var returnedMessages = command.Channel.GetMessagesAsync(limit:(int)(long)conditionValue);
+                            List<IMessage> toPurge = new List<IMessage>();
+                            await foreach (var batch in returnedMessages)
+                            {
+                                foreach (var message in batch)
+                                {
+                                    toPurge.Add(message);
+                                }
+                            }
+                            await command.RespondAsync(Person.GetRandomItem("slash_purge"));
+                            foreach (var message in toPurge)
+                            {
+                                await message.DeleteAsync();
+                            }
+                            break;
+                        case "until-x":
+                            await command.RespondAsync(Person.GetRandomItem("not_implemented"));
                             break;
                     }
                     break;

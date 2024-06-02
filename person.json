@@ -40,6 +40,12 @@
         "your level is way too high",
         "nuh uh"
     ],
+    "slash_purge":
+    [
+        "down with the horde.",
+        "i'm always up for that >:3",
+        "haec sunt verba horrifico"
+    ],
     "level_up":
     [
         "congrats! you leveled up-no just kidding screw that",
@@ -71,5 +77,10 @@
         "byee",
         "have fun",
         "this is so sad can we get 10 like"
+    ],
+    "not_implemented":
+    [
+        "not implemented!",
+        "they really like to leave things unimplemented"
     ]
 }
