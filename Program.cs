@@ -39,6 +39,7 @@ namespace Bot
             _client.SlashCommandExecuted += SlashCommands.SlashCommandExecuted;
             _client.UserJoined += UserJoined;
             _client.ReactionAdded += ReactionAdded;
+            _client.ReactionRemoved += ReactionRemoved;
             timer = new Timer();
             DateTime nowTime = DateTime.Now;
             DateTime nextTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 0, 0, 0, 0);
@@ -51,6 +52,18 @@ namespace Bot
         }
         
         public static DiscordSocketClient GetClient() => _client;
+
+        private static async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
+        {
+            if (reaction.Emote.Name == "pin")
+            {
+                IUserMessage realMessage = await message.GetOrDownloadAsync();
+                if (!realMessage.Reactions.ContainsKey(reaction.Emote))
+                {
+                    await realMessage.UnpinAsync();
+                }
+            }
+        }
 
         private static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
         {
