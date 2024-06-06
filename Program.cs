@@ -26,14 +26,14 @@ namespace Bot
             };
             _client = new DiscordSocketClient(socketconfig);
             _client.Log += Log;
-            _client.Ready += SlashCommands.RegisterCommands;
+            _client.Ready += SlashCommandRegistrar.RegisterCommands;
 
             await _client.LoginAsync(TokenType.Bot, Config.GetSetting<string>("token"));
             await _client.StartAsync();
 
             PinReaction.Init();
             SubscribedMessages.Init();
-            _client.SlashCommandExecuted += SlashCommands.SlashCommandExecuted;
+            _client.SlashCommandExecuted += SlashCommandRegistrar.SlashCommandExecuted;
             _client.UserJoined += UserJoined;
 
             await Task.Delay(-1);
