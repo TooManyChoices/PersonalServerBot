@@ -16,6 +16,8 @@ namespace Bot
 
         public static async Task RegisterCommands()
         {
+            SlashCommands.Init();
+
             var applicationCommandProperties = new ApplicationCommandProperties[] {
                 new SlashCommandBuilder()
                     .WithName("set")
@@ -98,7 +100,7 @@ namespace Bot
             }
         }
 
-        public static void SlashCommandExecuted(SocketSlashCommand command)
+        public static async Task SlashCommandExecuted(SocketSlashCommand command)
         {
             commands[command.Data.Name].Invoke(null, command);
         }

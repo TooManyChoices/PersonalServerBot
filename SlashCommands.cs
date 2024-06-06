@@ -8,9 +8,9 @@ using Discord.WebSocket;
 
 namespace Bot
 {
-    public class SlashSet 
+    public class SlashCommands 
     {
-        public void Init()
+        public static void Init()
         {
             SlashCommandRegistrar.commands["set"] += set;
             SlashCommandRegistrar.commands["git"] += git;
@@ -20,7 +20,7 @@ namespace Bot
             SlashCommandRegistrar.commands["purge"] += purge;
         }
 
-        private async void purge(object sender, SocketSlashCommand command)
+        private static async void purge(object sender, SocketSlashCommand command)
         {
             string condition = command.Data.Options.First().Name;
             var conditionValue = command.Data.Options.First().Value;
@@ -48,7 +48,7 @@ namespace Bot
             }
         }
 
-        private async void role(object sender, SocketSlashCommand command)
+        private static async void role(object sender, SocketSlashCommand command)
         {
             string linkInput = command.Data.Options.First().Name;
             ServerData serverData = Database.ServerDataFromId((ulong)command.GuildId);
@@ -62,7 +62,7 @@ namespace Bot
             await command.RespondAsync(Person.GetRandomItem("slash_configs"), ephemeral: true);
         }
 
-        private async void channel(object sender, SocketSlashCommand command)
+        private static async void channel(object sender, SocketSlashCommand command)
         {
             string linkInput = command.Data.Options.First().Name;
             ServerData serverData = Database.ServerDataFromId((ulong)command.GuildId);
@@ -79,12 +79,12 @@ namespace Bot
             await command.RespondAsync(Person.GetRandomItem("slash_configs"), ephemeral: true);
         }
 
-        private async void level(object sender, SocketSlashCommand command)
+        private static async void level(object sender, SocketSlashCommand command)
         {
             await command.RespondAsync(Person.GetRandomItem("slash_level"));
         }
 
-        private async void git(object sender, SocketSlashCommand command)
+        private static async void git(object sender, SocketSlashCommand command)
         {
             var embed = new EmbedBuilder()
                 .WithTitle("GitHub Repo")
@@ -95,7 +95,7 @@ namespace Bot
             await command.RespondAsync(embed: embed.Build());
         }
 
-        private async void set(object sender, SocketSlashCommand command)
+        private static async void set(object sender, SocketSlashCommand command)
         {
             var role = await GetPersonalRoleAsync(command);
             SocketGuild guild = Program.GetClient().GetGuild(command.GuildId ?? 0);
