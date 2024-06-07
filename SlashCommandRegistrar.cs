@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -12,7 +11,12 @@ namespace Bot
 {
     public class SlashCommandRegistrar
     {
-        public static Dictionary<string, EventHandler<SocketSlashCommand>> commands;
+        public static Dictionary<string, Func<SocketSlashCommand, Task>> commands;
+
+        public static void RegisterCommandEvent(string key, Func<SocketSlashCommand, Task> listener)
+        {
+            commands.Add(key, (command)=>listener(command));
+        }
 
         public static async Task RegisterCommands()
         {
@@ -102,7 +106,7 @@ namespace Bot
 
         public static async Task SlashCommandExecuted(SocketSlashCommand command)
         {
-            commands[command.Data.Name].Invoke(null, command);
+            await commands[command.Data.Name](command);
         }
 
         public static async Task<IRole> GetPersonalRoleAsync(IGuild guild, IUser user)
