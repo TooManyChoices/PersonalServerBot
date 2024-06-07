@@ -11,7 +11,7 @@ namespace Bot
 {
     public class SlashCommandRegistrar
     {
-        public static Dictionary<string, Func<SocketSlashCommand, Task>> commands;
+        public static Dictionary<string, Func<SocketSlashCommand, Task>> commands = new();
 
         public static void RegisterCommandEvent(string key, Func<SocketSlashCommand, Task> listener)
         {
