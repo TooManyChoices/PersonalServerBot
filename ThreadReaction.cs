@@ -18,10 +18,14 @@ namespace Bot
             if (reaction.Emote.Name == "thread")
             {
                 IUserMessage realMessage = await message.GetOrDownloadAsync();
+                if (realMessage.Thread != null) return;
+
                 IMessageChannel realChannel = await channel.GetOrDownloadAsync();
+
                 string name = realMessage.Content;
                 if (name == String.Empty) name = "thread";
                 if (name.Length > 25) name = name.Substring(0, Math.Min(name.Length, 25));
+                
                 await ((SocketTextChannel)realChannel).CreateThreadAsync(name:name, message:realMessage).Result.SendMessageAsync("thread");
             }
         }
