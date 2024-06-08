@@ -19,9 +19,10 @@ namespace Bot
             {
                 IUserMessage realMessage = await message.GetOrDownloadAsync();
                 IMessageChannel realChannel = await channel.GetOrDownloadAsync();
-                string content = realMessage.Content;
-                content = content.Substring(0, Math.Min(content.Length, 99));
-                await ((SocketTextChannel)realChannel).CreateThreadAsync(name:content, message:realMessage).Result.SendMessageAsync("thread");
+                string name = realMessage.Content;
+                if (name == String.Empty) name = "thread";
+                if (name.Length > 25) name = name.Substring(0, Math.Min(name.Length, 25));
+                await ((SocketTextChannel)realChannel).CreateThreadAsync(name:name, message:realMessage).Result.SendMessageAsync("thread");
             }
         }
     }
