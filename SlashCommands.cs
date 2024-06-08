@@ -91,7 +91,7 @@ namespace Bot
                 .AddField("discord-bot-for-personal-server", 
                     "[Link to Repository](https://github.com/TooManyChoices/discord-bot-for-personal-server)"
                 )
-                .WithThumbnailUrl("https://github.com/TooManyChoices/discord-bot-for-a-server/raw/git-command-and-not-me-making-an-excuse-to-use-branches/assets/GitHub_Invertocat_Light.png")
+                .WithThumbnailUrl("https://github.com/TooManyChoices/discord-bot-for-a-server/raw/main/assets/GitHub_Invertocat_Light.png")
                 .WithUrl("https://github.com/TooManyChoices/discord-bot-for-personal-server");
             await command.RespondAsync(embed: embed.Build());
         }
