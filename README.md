@@ -11,3 +11,4 @@ here are the keys:
 - **person (string, required)**: path from targetted config.json to the person.json.
 - **database (string, required)**: path from targetted config.json to a database.json.
 - **insane-rambling-chance (number, optional)**: percentage chance from 0.0-100.0 for the bot to send a message at 12:00 AM every night.
+- **disable-ready-messages (bool, optional)**: if the bot sends an on_ready message to all subscribed channels
