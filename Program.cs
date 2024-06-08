@@ -32,6 +32,7 @@ namespace Bot
             await _client.StartAsync();
 
             PinReaction.Init();
+            ThreadReaction.Init();
             SubscribedMessages.Init();
             _client.SlashCommandExecuted += SlashCommandRegistrar.SlashCommandExecuted;
             _client.UserJoined += UserJoined;
