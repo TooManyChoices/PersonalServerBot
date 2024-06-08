@@ -87,11 +87,10 @@ namespace Bot
         private static async Task git(SocketSlashCommand command)
         {
             var embed = new EmbedBuilder()
-                .WithTitle("GitHub Repo")
+                .WithTitle("TooManyChoices/discord-bot-for-personal-server")
                 .WithUrl("https://github.com/TooManyChoices/discord-bot-for-personal-server")
-                .WithThumbnailUrl("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png")
-                .WithDescription("bot for a personal server in which i do personal things")
-                .WithColor(Discord.Color.DarkBlue);
+                .WithThumbnailUrl("https://github.com/TooManyChoices/discord-bot-for-a-server/raw/git-command-and-not-me-making-an-excuse-to-use-branches/assets/GitHub_Invertocat_Light.png")
+                .WithDescription("Github Repository");
             await command.RespondAsync(embed: embed.Build());
         }
 
