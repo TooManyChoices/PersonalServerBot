@@ -1,3 +1,5 @@
+i do not know how version control works
+
 # config.json guide
 hello mysterious github wanderer, welcome to this repo. you may have noticed a lot of things mentioning a "config.json" and yet no config.json in sight. well, my dear friend (who is dealing with my lack of capitalization) that is because it, like, contains my bot token and stuff, so, i didn't want it here :thumbsup:
 
