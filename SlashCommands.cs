@@ -12,12 +12,12 @@ namespace Bot
     {
         public static void Init()
         {
-            SlashCommandRegistrar.RegisterCommandEvent("set", set);
-            SlashCommandRegistrar.RegisterCommandEvent("git", git);
-            SlashCommandRegistrar.RegisterCommandEvent("level", level);
-            SlashCommandRegistrar.RegisterCommandEvent("channel", channel);
-            SlashCommandRegistrar.RegisterCommandEvent("role", role);
-            SlashCommandRegistrar.RegisterCommandEvent("purge", purge);
+            Program.SlashCommands.RegisterEvent("set", set);
+            Program.SlashCommands.RegisterEvent("git", git);
+            Program.SlashCommands.RegisterEvent("level", level);
+            Program.SlashCommands.RegisterEvent("channel", channel);
+            Program.SlashCommands.RegisterEvent("role", role);
+            Program.SlashCommands.RegisterEvent("purge", purge);
         }
 
         private static async Task purge(SocketSlashCommand command)
