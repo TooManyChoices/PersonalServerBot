@@ -108,32 +108,5 @@ namespace Bot
         {
             await commands[command.Data.Name](command);
         }
-
-        public static async Task<IRole> GetPersonalRoleAsync(IGuild guild, IUser user)
-        {
-            ServerData serverData = Database.ServerDataFromId(guild.Id);
-            if (serverData.personal_roles.ContainsKey(Convert.ToString(user.Id)))
-            {
-                IRole foundRole = guild.GetRole(serverData.personal_roles[Convert.ToString(user.Id)]);
-                if (foundRole != null) return foundRole;
-            }
-            
-            var role = await guild.CreateRoleAsync(user.Username, GuildPermissions.None, null, false, null);
-            await (user as IGuildUser).AddRoleAsync(
-                role.Id
-            );
-            serverData.personal_roles[Convert.ToString(user.Id)] = role.Id;
-            Database.UpdateServerData(guild.Id, serverData);
-
-            return role;
-        }
-        public static async Task<IRole> GetPersonalRoleAsync(SocketGuildUser guildUser)
-        {
-            return await GetPersonalRoleAsync(guildUser.Guild, guildUser);
-        }
-        public static async Task<IRole> GetPersonalRoleAsync(SocketSlashCommand command)
-        {
-            return await GetPersonalRoleAsync(Program.GetClient().GetGuild(command.GuildId ?? 0), command.User);
-        }
     }
 }
