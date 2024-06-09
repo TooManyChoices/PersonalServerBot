@@ -22,7 +22,7 @@ namespace Bot
             DiscordSocketConfig socketconfig = new DiscordSocketConfig
             {
                 LogLevel = (LogSeverity)(5 - Config.GetSetting<int>("ignore-log-severity", 0)),
-                GatewayIntents = GatewayIntents.GuildMembers
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent | GatewayIntents.GuildMembers
             };
             _client = new DiscordSocketClient(socketconfig);
             _client.Log += Log;

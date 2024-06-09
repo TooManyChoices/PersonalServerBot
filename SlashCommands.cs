@@ -98,7 +98,7 @@ namespace Bot
 
         private static async Task set(SocketSlashCommand command)
         {
-            var role = await GetPersonalRoleAsync(command);
+            var role = await GetPersonalRoleAsync(Program.GetClient().GetGuild(command.GuildId ?? 0), command.User);
             SocketGuild guild = Program.GetClient().GetGuild(command.GuildId ?? 0);
             if (role == null) return;
             var subcommand = command.Data.Options.First().Name;
@@ -130,21 +130,11 @@ namespace Bot
             }
             
             var role = await guild.CreateRoleAsync(user.Username, GuildPermissions.None, null, false, null);
-            await (user as IGuildUser).AddRoleAsync(
-                role.Id
-            );
+            await (user as IGuildUser).AddRoleAsync(role.Id);
             serverData.personal_roles[Convert.ToString(user.Id)] = role.Id;
             Database.UpdateServerData(guild.Id, serverData);
 
             return role;
-        }
-        public static async Task<IRole> GetPersonalRoleAsync(SocketGuildUser guildUser)
-        {
-            return await GetPersonalRoleAsync(guildUser.Guild, guildUser);
-        }
-        public static async Task<IRole> GetPersonalRoleAsync(SocketSlashCommand command)
-        {
-            return await GetPersonalRoleAsync(Program.GetClient().GetGuild(command.GuildId ?? 0), command.User);
         }
     }
 }
