@@ -10,7 +10,9 @@ namespace Bot
 
         public static void Init()
         {
-            fileDictionary = new JSONFileDictionary<string, dynamic>(Program.StartupArgs[0]);
+            fileDictionary = new JSONFileDictionary<string, dynamic>(
+                Program.GetConfigPath()
+            );
             overrides = new Dictionary<string, dynamic>();
             if (Program.StartupArgs.Length > 1)
             {

@@ -11,7 +11,7 @@ namespace Bot
         public static void Init()
         {
             fileDictionary = new JSONFileDictionary<string, ServerData>(
-                Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("database"))
+                Path.Combine(Program.GetConfigPath(), Config.GetSetting<string>("database"))
             );
         }
 

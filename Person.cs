@@ -13,7 +13,7 @@ namespace Bot
 
         public static void Init()
         {
-            fileDictionary = new JSONFileDictionary<string, dynamic>(Path.Combine(Program.StartupArgs[0], Config.GetSetting<string>("person")));
+            fileDictionary = new JSONFileDictionary<string, dynamic>(Path.Combine(Program.GetConfigPath(), Config.GetSetting<string>("person")));
 
             Timer timer = new Timer {
                 Interval = 30000

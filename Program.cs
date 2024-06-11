@@ -55,7 +55,11 @@ namespace Bot
             await Task.Delay(-1);
         }
         
-        public static DiscordSocketClient GetClient() => _client;
+        public static DiscordSocketClient GetClient() => 
+            _client;
+
+        public static string GetConfigPath() => 
+            Program.StartupArgs.Length > 0 ? Program.StartupArgs[0] : System.Environment.GetEnvironmentVariable("BOT_CONFIG", EnvironmentVariableTarget.User);
 
         private static async Task UserJoined(SocketGuildUser user)
         {
