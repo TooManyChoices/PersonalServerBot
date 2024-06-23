@@ -38,7 +38,8 @@
         "no. just no.",
         "tricked youu",
         "your level is way too high",
-        "nuh uh"
+        "nuh uh",
+        "we're no strangers to love-"
     ],
     "slash_purge":
     [
@@ -48,15 +49,12 @@
     ],
     "level_up":
     [
-        "congrats! you leveled up-no just kidding screw that",
-        "wowowow, you leveled up. great job. this only means you spend too much time here",
         "level up! use /level to view your level"
     ],
     "insane_ramblings":
     [
-        "I tend to think about the same things over and over, but like, pseudo-randomly",
+        "I tend to say the same things over and over, but like, pseudo-randomly",
         "why don't I capitalize properly I'm a literal bot",
-        "who's really talking right now",
         "discord.net is FINE, ok",
         "at least I don't talk like chatgpt",
         "don't use /level, it's not worth it",
@@ -66,18 +64,19 @@
     ],
     "user_joined":
     [
-        "sup",
-        "hiiiiiii",
-        "hiii",
-        "ayyyy wassup",
-        "make sure to like and subscribe"
+        "sup [target_user]",
+        "hiiiiiii [target_user]",
+        "hiii [target_user]",
+        "I-I hope [target_user].. I hope [target_user] brought the.. the pizza-",
+        "[target_user] make sure to like and subscribe"
     ],
     "user_left":
     [
-        "I scared them off didn't I",
-        "byee",
-        "have fun",
-        "this is so sad can we get 10 like"
+        "I scared [target_user] off didn't I",
+        "bye [target_user]!",
+        "have fun [target_user]",
+        "this is so sad can we get 10 like",
+        "oh fridge, [target_user] found the door"
     ],
     "not_implemented":
     [
