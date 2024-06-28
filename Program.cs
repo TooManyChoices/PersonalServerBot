@@ -51,10 +51,11 @@ namespace Bot
             _client.UserCommandExecuted += UserCommands.CommandExecuted;
             _client.MessageCommandExecuted += MessageCommands.CommandExecuted;
             _client.UserJoined += UserJoined;
+            _client.UserLeft += UserLeft;
 
             await Task.Delay(-1);
         }
-        
+
         public static DiscordSocketClient GetClient() => 
             _client;
 
@@ -68,6 +69,12 @@ namespace Bot
 
             if (user.Guild.GetWelcomeMessagesEnabled())
                 await user.Guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_joined", user.Mention));
+        }
+
+        private static async Task UserLeft(SocketGuild guild, SocketUser user)
+        {
+            if (guild.GetWelcomeMessagesEnabled())
+                await guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_left", user.GlobalName));
         }
 
         public static Task Log(LogMessage msg)
