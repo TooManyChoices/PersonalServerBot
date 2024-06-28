@@ -32,10 +32,14 @@ namespace Bot
             }
         }
 
-        public static string GetRandomItem(string key)
+        public static string GetRandomItem(string key, params string[] args)
         {
             JArray array = fileDictionary.dictionary[key];
             string value = (string)array[Program.rng.Next(0, array.Count)];
+            for (int i = 0; i < args.Length; i++)
+            {
+                value = value.Replace($"[{i}]", args[i]);            
+            }
             return value;
         }
     }

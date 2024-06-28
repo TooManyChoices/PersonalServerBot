@@ -64,19 +64,17 @@
     ],
     "user_joined":
     [
-        "sup [target_user]",
-        "hiiiiiii [target_user]",
-        "hiii [target_user]",
-        "I-I hope [target_user].. I hope [target_user] brought the.. the pizza-",
-        "[target_user] make sure to like and subscribe"
+        "sup [0]",
+        "hiiiiiii [0]",
+        "hiii [0]",
+        "I hope [0].. I hope [0] brought the.. I hope they brought the pizza!-",
+        "[0] make sure to like and subscribe"
     ],
     "user_left":
     [
-        "I scared [target_user] off didn't I",
-        "bye [target_user]!",
-        "have fun [target_user]",
-        "this is so sad can we get 10 like",
-        "oh fridge, [target_user] found the door"
+        "bye [0]!",
+        "have fun [0]",
+        "oh fridge, [0] found the door"
     ],
     "not_implemented":
     [

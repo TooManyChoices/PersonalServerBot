@@ -67,7 +67,7 @@ namespace Bot
                 await user.AddRoleAsync(Database.ServerDataFromId(user.Guild.Id).linked_roles.member);
 
             if (user.Guild.GetWelcomeMessagesEnabled())
-                await user.Guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_joined"));
+                await user.Guild.SystemChannel.SendMessageAsync(Person.GetRandomItem("user_joined", user.Mention));
         }
 
         public static Task Log(LogMessage msg)
