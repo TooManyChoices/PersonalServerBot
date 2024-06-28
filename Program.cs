@@ -1,8 +1,8 @@
 using System;
+using System.Timers;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
-using Discord.Interactions;
 using Discord.Net;
 using Discord.WebSocket;
 using Newtonsoft.Json;
@@ -53,6 +53,12 @@ namespace Bot
             _client.UserJoined += UserJoined;
             _client.UserLeft += UserLeft;
 
+            Timer timer = new Timer {
+                Interval = Config.GetSetting<int>("random-status-interval")
+            };
+            timer.Elapsed += NewRandomStatus;
+            timer.Start();
+
             await Task.Delay(-1);
         }
 
@@ -61,6 +67,11 @@ namespace Bot
 
         public static string GetConfigPath() => 
             Program.StartupArgs.Length > 0 ? Program.StartupArgs[0] : System.Environment.GetEnvironmentVariable("BOT_CONFIG", EnvironmentVariableTarget.User);
+        
+        private async static void NewRandomStatus(object sender, ElapsedEventArgs e)
+        {
+            await _client.SetGameAsync(Person.GetRandomItem("random_status"), type: ActivityType.CustomStatus);
+        }
 
         private static async Task UserJoined(SocketGuildUser user)
         {

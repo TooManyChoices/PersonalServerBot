@@ -19,5 +19,5 @@ here are the keys:
 - **ignore-log-severity (number, optional)**: a lot of logs can appear, luckily they all have a severity level between 0-5. i'd recommend setting this one to 2 when you aren't testing the bot so that the console isn't flooded too badly.
 - **person (string, required)**: path from targetted config.json to the person.json.
 - **database (string, required)**: path from targetted config.json to a database.json.
-- **insane-rambling-chance (number, optional)**: percentage chance from 0.0-100.0 for the bot to send a message at 12:00 AM every night.
-- **disable-ready-messages (bool, optional)**: whether or not the bot sends an on_ready message to all subscribed channels
+- **random-status-interval (number, optional)**: time in milliseconds it waits to change it's status.
+- **disable-ready-messages (bool, optional)**: whether or not the bot sends an on_ready message to all subscribed channels.
