@@ -20,6 +20,7 @@ namespace Bot
             };
             timer.Elapsed += CheckFile;
             CheckFile(null, null);
+            timer.Start();
         }
         
         public static void CheckFile(object sender, ElapsedEventArgs e)
