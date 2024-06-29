@@ -18,12 +18,12 @@ namespace Bot
             Timer timer = new Timer {
                 Interval = 30000
             };
-            timer.Elapsed += CheckFile;
-            CheckFile(null, null);
+            timer.Elapsed += (object a, ElapsedEventArgs b) => CheckFile();
+            CheckFile();
             timer.Start();
         }
         
-        public static void CheckFile(object sender, ElapsedEventArgs e)
+        public static void CheckFile()
         {
             DateTime check = File.GetLastWriteTime(fileDictionary.path);
             if (lastModified != check)
